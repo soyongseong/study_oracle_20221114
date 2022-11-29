@@ -45,18 +45,49 @@ FROM    post;
 
 -- 2. post 정보를 입력
 INSERT INTO POST
-VALUES (0001, '오라클 DBMS에 학습하기', 1, SYSDATE);
+VALUES (0001, '홍길동, 출석완료!', 1, SYSDATE, 0001);
 INSERT INTO POST
-VALUES (0002, '혼자공부하는 JAVA 심화', 1, SYSDATE);
+VALUES (0002, '오늘 정말 추워요!', 1, SYSDATE, 0002);
 INSERT INTO POST
-VALUES (0003, '1인 개발자의 공부법', 2, SYSDATE);
+VALUES (0003, 'ORACLE 설치방법?', 2, SYSDATE, 0003);
 
+SELECT *
+FROM    post;
 -- JOIN 조회
 -- 오라클 조인
-SELECT  p.post_id, p.post_title,
-        w.writer_name
+SELECT  p.post_id, p.post_title, p.post_date write_date,
+        w.writer_name, w.writer_email
 FROM    post p, writer w
 WHERE   p.post_writer = w.writer_id;
+
+--BOARD 테이블 추가
+CREATE TABLE BOARD (
+    board_id NUMBER(4) PRIMARY KEY,
+    board_name VARCHAR2(30) NOT NULL,
+    board_date DATE DEFAULT SYSDATE
+);
+
+-- 샘플데이터
+INSERT INTO BOARD
+VALUES  (0001, '출석 게시판', TO_DATE('22/11/14'));
+INSERT INTO BOARD
+VALUES  (0002, '자유 게시판', TO_DATE('22/11/14'));
+INSERT INTO BOARD
+VALUES  (0003, '질문답변 게시판', TO_DATE('22/11/14'));
+
+
+SELECT * 
+FROM    POST;
+
+SELECT * 
+FROM    BOARD;
+
+-- POST에 BOARD 이름 정보를 조회
+SELECT  p.POST_ID, p.POST_TITLE, p.POST_DATE, 
+        b.BOARD_NAME
+FROM    POST p, BOARD b       
+WHERE   p.POST_BOARD = b.board_id;
+
 
 
 
